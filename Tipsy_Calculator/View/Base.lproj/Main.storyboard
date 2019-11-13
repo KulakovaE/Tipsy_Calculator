@@ -173,7 +173,7 @@
                         <outlet property="billTextField" destination="chn-uV-2ap" id="HPk-uw-7Sv"/>
                         <outlet property="splitNumberlabel" destination="pov-M9-ZKS" id="hJC-Q4-Do2"/>
                         <outlet property="tenPctBtn" destination="1ZX-1H-jeE" id="F13-tW-VEx"/>
-                        <outlet property="twelvePctBtn" destination="gCL-AT-WNh" id="xYe-YN-DyZ"/>
+                        <outlet property="twentyPctBtn" destination="gCL-AT-WNh" id="xYe-YN-DyZ"/>
                         <outlet property="zeroPctBtn" destination="hLz-et-R6h" id="7vR-Er-7w9"/>
                     </connections>
                 </viewController>

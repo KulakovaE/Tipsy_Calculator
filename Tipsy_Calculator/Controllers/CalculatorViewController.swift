@@ -11,52 +11,51 @@ import UIKit
 class CalculatorViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var billTextField: UITextField!
-    @IBOutlet weak var twelvePctBtn: UIButton!
+    @IBOutlet weak var twentyPctBtn: UIButton!
     @IBOutlet weak var tenPctBtn: UIButton!
     @IBOutlet weak var zeroPctBtn: UIButton!
     @IBOutlet weak var splitNumberlabel: UILabel!
     
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-    }
+    var tip = 0.10
+    var numberOfPeople = 2
+    var billTotal = 0.0
 
     @IBAction func tipChanged(_ sender: UIButton) {
         
-        //var bill = Float(billTextField.text ?? "0.0")
-        switch sender {
-        case zeroPctBtn:
-            zeroPctBtn.isSelected = true
-            tenPctBtn.isSelected = false
-            twelvePctBtn.isSelected = false
-            print((Float(0) / Float(100)))
-        case tenPctBtn:
-            tenPctBtn.isSelected = true
-            zeroPctBtn.isSelected = false
-            twelvePctBtn.isSelected = false
-            print (Float(10) / Float(100))
-        case twelvePctBtn:
-            twelvePctBtn.isSelected = true
-            zeroPctBtn.isSelected = false
-            tenPctBtn.isSelected = false
-            print (Float(20) / Float(100))
-        default:
-            "Something is wrong"//nz so da praam so voa
-        }
+        //Dismiss the keyboard when the user chooses one of the tip values.
         billTextField.endEditing(true)
+        
+        zeroPctBtn.isSelected = false
+        tenPctBtn.isSelected = false
+        twentyPctBtn.isSelected = false
+        sender.isSelected = true
+        
+        let buttonTitle = sender.currentTitle!
+        let buttonTitleMinusPercentSign = String(buttonTitle.dropLast())
+        let buttonTitleAsANumber = Double(buttonTitleMinusPercentSign)!
+        tip = buttonTitleAsANumber / 100
     }
     
-    @IBAction func textFieldTapped(_ sender: Any) {
-
-        //UIKeyboardAppearance.self
-    }
     @IBAction func steperValueChanged(_ sender: UIStepper) {
-        splitNumberlabel.text = Int(sender.value).description
+        splitNumberlabel.text = String(format: "%.0f", sender.value)
+        numberOfPeople = Int(sender.value)
     }
     
     @IBAction func calculatePressed(_ sender: UIButton) {
-        print(Int(billTextField.text ?? "0"))
+        //Get the text the user typed in the billTextField
+        let bill = billTextField.text!
+        
+        //If the text is no empty String
+        if bill != "" {
+        //Turn the bill from a String e.g. "123.50" to an actual String with decimal places.
+                   //e.g. 125.50
+        billTotal = Double(bill)!
+            //Multiply the bill by the tip percentage and divide by the number of people to split the bill.
+            let result = billTotal * (1 + tip) / Double(numberOfPeople)
+            //Round the result to 2 decimal places and turn it into a String.
+            let resultTo2DecimalPlaces = String(format: "%.2f", result)
+            
+        }
     }
 }
 
