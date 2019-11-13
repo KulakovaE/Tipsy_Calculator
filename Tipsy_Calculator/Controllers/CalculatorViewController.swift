@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CalculatorViewController: UIViewController, UITextFieldDelegate {
+class CalculatorViewController: UIViewController {
 
     @IBOutlet weak var billTextField: UITextField!
     @IBOutlet weak var twentyPctBtn: UIButton!
@@ -19,16 +19,32 @@ class CalculatorViewController: UIViewController, UITextFieldDelegate {
     var tip = 0.10
     var numberOfPeople = 2
     var billTotal = 0.0
+    var finalResult = "0.0"
 
     @IBAction func tipChanged(_ sender: UIButton) {
         
         //Dismiss the keyboard when the user chooses one of the tip values.
-        billTextField.endEditing(true)
+        //billTextField.endEditing(true)
         
-        zeroPctBtn.isSelected = false
-        tenPctBtn.isSelected = false
-        twentyPctBtn.isSelected = false
-        sender.isSelected = true
+        switch sender {
+            case zeroPctBtn:
+                zeroPctBtn.isSelected = true
+                tenPctBtn.isSelected = false
+                twentyPctBtn.isSelected = false
+            case tenPctBtn:
+                tenPctBtn.isSelected = true
+                zeroPctBtn.isSelected = false
+                twentyPctBtn.isSelected = false
+            case twentyPctBtn:
+                zeroPctBtn.isSelected = false
+                tenPctBtn.isSelected = false
+                twentyPctBtn.isSelected = true
+        default:
+            sender.isSelected = false
+        }
+        
+      
+        
         
         let buttonTitle = sender.currentTitle!
         let buttonTitleMinusPercentSign = String(buttonTitle.dropLast())
@@ -53,8 +69,17 @@ class CalculatorViewController: UIViewController, UITextFieldDelegate {
             //Multiply the bill by the tip percentage and divide by the number of people to split the bill.
             let result = billTotal * (1 + tip) / Double(numberOfPeople)
             //Round the result to 2 decimal places and turn it into a String.
-            let resultTo2DecimalPlaces = String(format: "%.2f", result)
-            
+            finalResult = String(format: "%.2f", result)
+        }
+        self.performSegue(withIdentifier: "ResultsViewController", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ResultsViewController" {
+            let destinationVC = segue.destination as! ResultsViewController
+            destinationVC.result = finalResult
+            destinationVC.tip = Int(tip*100)
+            destinationVC.split = numberOfPeople
         }
     }
 }
