@@ -9,7 +9,7 @@
 import UIKit
 
 class CalculatorViewController: UIViewController {
-
+    
     @IBOutlet weak var billTextField: UITextField!
     @IBOutlet weak var twentyPctBtn: UIButton!
     @IBOutlet weak var tenPctBtn: UIButton!
@@ -20,31 +20,25 @@ class CalculatorViewController: UIViewController {
     var numberOfPeople = 2
     var billTotal = 0.0
     var finalResult = "0.0"
-
+    
     @IBAction func tipChanged(_ sender: UIButton) {
         
-        //Dismiss the keyboard when the user chooses one of the tip values.
-        //billTextField.endEditing(true)
-        
         switch sender {
-            case zeroPctBtn:
-                zeroPctBtn.isSelected = true
-                tenPctBtn.isSelected = false
-                twentyPctBtn.isSelected = false
-            case tenPctBtn:
-                tenPctBtn.isSelected = true
-                zeroPctBtn.isSelected = false
-                twentyPctBtn.isSelected = false
-            case twentyPctBtn:
-                zeroPctBtn.isSelected = false
-                tenPctBtn.isSelected = false
-                twentyPctBtn.isSelected = true
+        case zeroPctBtn:
+            zeroPctBtn.isSelected = true
+            tenPctBtn.isSelected = false
+            twentyPctBtn.isSelected = false
+        case tenPctBtn:
+            tenPctBtn.isSelected = true
+            zeroPctBtn.isSelected = false
+            twentyPctBtn.isSelected = false
+        case twentyPctBtn:
+            zeroPctBtn.isSelected = false
+            tenPctBtn.isSelected = false
+            twentyPctBtn.isSelected = true
         default:
             sender.isSelected = false
         }
-        
-      
-        
         
         let buttonTitle = sender.currentTitle!
         let buttonTitleMinusPercentSign = String(buttonTitle.dropLast())
@@ -59,17 +53,16 @@ class CalculatorViewController: UIViewController {
     
     @IBAction func calculatePressed(_ sender: UIButton) {
         //Get the text the user typed in the billTextField
-        let bill = billTextField.text!
-        
-        //If the text is no empty String
-        if bill != "" {
-        //Turn the bill from a String e.g. "123.50" to an actual String with decimal places.
-                   //e.g. 125.50
-        billTotal = Double(bill)!
-            //Multiply the bill by the tip percentage and divide by the number of people to split the bill.
-            let result = billTotal * (1 + tip) / Double(numberOfPeople)
-            //Round the result to 2 decimal places and turn it into a String.
-            finalResult = String(format: "%.2f", result)
+        if let bill = billTextField.text {
+            if bill != "" {
+                //Turn the bill from a String e.g. "123.50" to an actual String with decimal places.
+                //e.g. 125.50
+                billTotal = Double(bill) ?? 0.0
+                //Multiply the bill by the tip percentage and divide by the number of people to split the bill.
+                let result = billTotal * (1 + tip) / Double(numberOfPeople)
+                //Round the result to 2 decimal places and turn it into a String.
+                finalResult = String(format: "%.2f", result)
+            }
         }
         self.performSegue(withIdentifier: "ResultsViewController", sender: self)
     }
