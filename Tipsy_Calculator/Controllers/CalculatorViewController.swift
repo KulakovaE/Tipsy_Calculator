@@ -69,10 +69,12 @@ class CalculatorViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ResultsViewController" {
-            let destinationVC = segue.destination as! ResultsViewController
-            destinationVC.result = finalResult
-            destinationVC.tip = Int(tip*100)
-            destinationVC.split = numberOfPeople
+            let destinationVC = segue.destination as? ResultsViewController
+            if let destinationVC = destinationVC {
+                destinationVC.result = finalResult
+                destinationVC.tip = Int(tip*100)
+                destinationVC.split = numberOfPeople
+            }
         }
     }
 }
